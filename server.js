@@ -1,5 +1,5 @@
 import express from 'express'
-
+import db from './db.js'
 const app = express()
 
 // Middleware to parse JSON request bodies
