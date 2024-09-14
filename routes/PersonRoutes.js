@@ -7,9 +7,9 @@ router.get('/', async (req, res)=>{
     try{
         const newPerson = await Person.find()
         console.log("newPerson");
-        res.status(200).json(response)
+        res.status(200).json(newPerson)
     }catch(error){
-        console.log(e);
+        console.log(error);
         res.status(500).json({error: "internal error"})
     }
 })
@@ -24,7 +24,7 @@ router.post('/', async (req, res)=>{
         res.status(200).json(response)
         
     }catch(error){
-        console.log(e);
+        console.log(error);
         res.status(500).json({error: "internal error"})
     }
 })
@@ -41,6 +41,30 @@ router.get('/:worktype', async (res, rej) => {
     }catch(error){
      console.log("error");
      res.status(500).json({error: "internal error"})
+    }
+ })
+
+ router.put('/:id', async(req, res) =>{
+    try{
+        const userID = req.params.id;
+        const personUpdate = req.body;
+        const response = await Person.findByIdAndUpdate(userID,personUpdate, {
+            new: true,
+            runValidators: true,
+        })
+    }catch(err){
+        console.log(err);
+        
+    }
+ })
+
+ router.delete('/:id', async ()=>{
+    try{
+        const userID = req.params.id;
+        const response = await Person.findByIdAndDelete(userID);
+
+    }catch(err){
+        console.log(err);
     }
  })
 
