@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-const mongoURL = "mongodb://127.0.0.1:27017/hotels";
-
+// const mongoURL = "mongodb://127.0.0.1:27017/hotels";
+const mongoURL = "mongodb+srv://punit:punit1234@hotels.1faa9.mongodb.net/"
 mongoose.connect(mongoURL);
 
 const db = mongoose.connection;

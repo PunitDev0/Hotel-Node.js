@@ -13,6 +13,6 @@ app.get('/', (req, res)=>{
     res.send('GET request received')
 })
 
-app.listen(3000,()=>{
-    console.log('Server is running on port 3000')
+app.listen(6000,()=>{
+    console.log('Server is running')
 })
