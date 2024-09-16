@@ -6,11 +6,16 @@ import cors from 'cors'
 const app = express()
 import personRoutes from './routes/PersonRoutes.js'
 import menuRoutes from './routes/MenuRoutes.js';
+import passport from './auth.js';
 app.use(bodyParser.json())
 dotenv.config()
 app.use(cors())
 app.use('/person', personRoutes)
-app.use('/menu', menuRoutes)
+app.use('/menu',passport.authenticate('local', {session : false}) , menuRoutes)
+
+app.use(passport.initialize())
+
+
 app.get('/', (req, res)=>{
     res.send('GET request received')
 })

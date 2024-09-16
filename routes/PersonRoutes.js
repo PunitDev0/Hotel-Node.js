@@ -13,7 +13,7 @@ router.get('/', async (req, res)=>{
         res.status(500).json({error: "internal error"})
     }
 })
-router.post('/', async (req, res)=>{
+router.post('/signup', async (req, res)=>{
     try{
         const data = req.body
 
@@ -61,7 +61,7 @@ router.get('/:worktype', async (res, rej) => {
  router.delete('/:id', async ()=>{
     try{
         const userID = req.params.id;
-        const response = await Person.findByIdAndDelete(userID);
+        const response = await Person.findByIdAndDelete(userID);    
 
     }catch(err){
         console.log(err);
