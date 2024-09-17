@@ -1,25 +1,38 @@
-import express from 'express'
+import express from 'express';
+const app = express();
 import db from './db.js'
-import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-import cors from 'cors'
-const app = express()
-import personRoutes from './routes/PersonRoutes.js'
-import menuRoutes from './routes/MenuRoutes.js';
-import passport from './auth.js';
-app.use(bodyParser.json())
-dotenv.config()
-app.use(cors())
-app.use('/person', personRoutes)
-app.use('/menu',passport.authenticate('local', {session : false}) , menuRoutes)
-
-app.use(passport.initialize())
+import passport from './auth.js'
+import bodyParser from 'body-parser'
+import Person from './Models/Person.js'
+const PORT = process.env.PORT || 3000;
+dotenv.config();
+app.use(express.json()); // Instead of bodyParser.json()
 
 
-app.get('/', (req, res)=>{
-    res.send('GET request received')
+// Middleware Function
+const logRequest = (req, res, next) => {
+    console.log(`[${new Date().toLocaleString()}] Request Made to : ${req.originalUrl}`);
+    next(); // Move on to the next phase
+}
+app.use(logRequest);
+
+app.use(passport.initialize());
+const localAuthMiddleware = passport.authenticate('local', {session: false})
+
+app.get('/', function (req, res) {
+    res.send('Welcome to our Hotel');
 })
-const PORT = process.env.PORT || 6000
-app.listen(PORT,()=>{
-    console.log('Server is running')
+
+// Import the router files
+import personRoutes from './routes/PersonRoutes.js';
+import menuItemRoutes from './routes/MenuRoutes.js';
+
+
+// Use the routers
+app.use('/person', personRoutes);
+app.use('/menu', menuItemRoutes);
+  
+app.listen(PORT, ()=>{
+    console.log('listening on port 3000');
 })

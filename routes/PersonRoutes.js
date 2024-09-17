@@ -15,6 +15,7 @@ router.get('/', async (req, res)=>{
 })
 router.post('/signup', async (req, res)=>{
     try{
+        
         const data = req.body
 
         const newPerson = new Person(data)

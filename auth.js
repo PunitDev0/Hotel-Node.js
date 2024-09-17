@@ -2,23 +2,21 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local';
 import Person from './Models/Person.js'
 
-passport.use(new LocalStrategy(async (users, pass, done) => {
-    try{
-        // console.log(`Recieved user : ${users, pass}` );
-        const user = await Person.findOne({username:users})
-        if(!user){
-            return done(null, false, { message: 'Incorrect username or password.' });
-        }
-        const isPassword = user.comparePassword(pass) 
-        if(!isPassword){
-            return done(null, false, { message: 'Incorrect username or password.' });
-        }
-
-        return done(null, user);
-    }catch(err){
-        return done(err)
+passport.use(new LocalStrategy(async (username, password, done) => {
+    try {
+        // console.log('Received credentials:', username, password);
+        const user = await Person.findOne({ username });
+        if (!user)
+            return done(null, false, { message: 'Incorrect username.' });
         
+        const isPasswordMatch = await user.comparePassword(password);
+        if (isPasswordMatch)
+            return done(null, user);
+        else
+            return done(null, false, { message: 'Incorrect password.' })
+    } catch (error) {
+        return done(error);
     }
-}))
+}));
 
 export default passport
