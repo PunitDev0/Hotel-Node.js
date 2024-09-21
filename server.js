@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import passport from './auth.js'
 import bodyParser from 'body-parser'
 import Person from './Models/Person.js'
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 dotenv.config();
 app.use(express.json()); // Instead of bodyParser.json()
 
