@@ -25,7 +25,8 @@ app.use(passport.initialize());
 const localAuthMiddleware = passport.authenticate('local', { session: false });
 
 // Base route
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
+    console.log('Server is running! Request received at /api');
     res.send('Welcome to our Hotel');
 });
 
