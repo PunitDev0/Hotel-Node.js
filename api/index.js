@@ -1,39 +1,37 @@
 import express from 'express';
-const app = express();
-import db from '../db.js'
-import dotenv from 'dotenv'
-import passport from '../auth.js'
-import bodyParser from 'body-parser'
-import Person from '../Models/Person.js'
-import { VercelRequest, VercelResponse } from '@vercel/node';
-const PORT = process.env.PORT || 5000;
+import dotenv from 'dotenv';
+import db from '../db.js'; // Ensure the path is correct
+import passport from '../auth.js'; // Ensure the path is correct
+import personRoutes from '../routes/PersonRoutes.js';
+import menuItemRoutes from '../routes/MenuRoutes.js';
+
+// Load environment variables
 dotenv.config();
-app.use(express.json()); // Instead of bodyParser.json()
 
+const app = express();
 
-// Middleware Function
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Request logging middleware
 const logRequest = (req, res, next) => {
-    console.log(`[${new Date().toLocaleString()}] Request Made to : ${req.originalUrl}`);
-    next(); // Move on to the next phase
-}
+    console.log(`[${new Date().toLocaleString()}] Request Made to: ${req.originalUrl}`);
+    next();
+};
 app.use(logRequest);
 
+// Initialize Passport for authentication
 app.use(passport.initialize());
-const localAuthMiddleware = passport.authenticate('local', {session: false})
+const localAuthMiddleware = passport.authenticate('local', { session: false });
 
-app.get('/api', function (req, res) {
+// Base route
+app.get('/', (req, res) => {
     res.send('Welcome to our Hotel');
-})
+});
 
-// Import the router files
-import personRoutes from './routes/PersonRoutes.js';
-import menuItemRoutes from './routes/MenuRoutes.js';
-
-
-// Use the routers
+// Use the routers for additional routes
 app.use('/person', personRoutes);
 app.use('/menu', menuItemRoutes);
-  
-app.listen(PORT, ()=>{
-    console.log(`listening on port ${PORT}` );
-})
+
+// Export the app as a serverless function for Vercel
+export default app;
