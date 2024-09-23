@@ -35,4 +35,7 @@ app.use('/person', personRoutes);
 app.use('/menu', menuItemRoutes);
 
 // Export the app as a serverless function for Vercel
-export default app;
+// export default app;
+app.listen(3000,()=>{
+    console.log('Server is running on port 3000');
+})
